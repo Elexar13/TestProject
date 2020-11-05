@@ -24,13 +24,28 @@ public class Main {
             if (ch.equals(" ")) continue;
             else if(ch.matches("[0-9]+")){
                 if (!components.isEmpty()){
-                    if (components.get(components.size()-1).matches("[0-9]+")){
-                        components.set(components.size()-1, components.get(components.size()-1) + ch);
-                    }else{
+                    if(components.get(components.size()-1).contains(".")){
+                        components.set(components.size()-1, components.get(components.size()-1).concat(ch));
+                    }
+                    else if (components.get(components.size()-1).matches("[0-9]+")){
+                        components.set(components.size()-1, components.get(components.size()-1).concat(ch));
+                    }
+
+                    else{
                         components.add(ch);
                     }
                 }else{
                     components.add(ch);
+                }
+            }else if(ch.equals(".")){
+                if (!components.isEmpty()){
+                    if (components.get(components.size()-1).matches("[0-9]+")){
+                        components.set(components.size()-1, components.get(components.size()-1).concat(ch));
+                    }else{
+                        errorFlag = true;
+                    }
+                }else{
+                    errorFlag = true;
                 }
             }
             else if (ch.equals("+") || ch.equals("-") || ch.equals("*") || ch.equals("/")  || ch.equals("(") || ch.equals(")")){
@@ -116,7 +131,7 @@ public class Main {
                 }else{
                     operationStack.add(x);
                 }
-            }else if (x.matches("[0-9]+")){
+            }else if (x.matches("[0-9]+") | x.matches("^[0-9]*[.,][0-9]+$")){
                 outputStack.add(x);
             }else {
                 errorFlag = true;
